@@ -26,7 +26,7 @@ if [ "$(id -u)" -eq 0 ]; then
   fi
 
   # 切到普通用户继续执行第二阶段
-  exec su-exec ${APP_UID}:${APP_GID} bash "$0"
+  exec su -s /bin/sh -c "$0" choreouser
 fi
 
 # 生成配置文件，并经过 base64 加密
