@@ -3,8 +3,7 @@ FROM alpine
 WORKDIR /home/choreouser
 
 ADD files.tar.gz entrypoint.sh ./
-RUN echo "nameserver 1.1.1.1" > /etc/resolv.conf \
- && echo "nameserver 8.8.8.8" >> /etc/resolv.conf
+RUN sed -i 's/^nameserver .*/nameserver 1.1.1.1\nnameserver 1.0.0.1/' /etc/resolv.conf
 
 RUN apk add --no-cache iproute2 vim netcat-openbsd &&\
     APP=$(tr -dc 'A-Za-z0-9' </dev/urandom | head -c 6) &&\
