@@ -1,8 +1,33 @@
 #!/bin/sh
+set -e
+
+APP_USER=choreouser
+APP_UID=10001
+APP_GID=10001
 
 # 定义 UUID 及 伪装路径,请自行修改.(注意:伪装路径以 / 符号开始,为避免不必要的麻烦,请不要使用特殊符号.)
 UUID=${UUID:-'de04add9-5c68-8bab-950c-08cd5320df18'}
 WSPATH=${WSPATH:-'choreo'}
+
+# ---------------- stage 1: root-only (DNS etc.) ----------------
+if [ "$(id -u)" -eq 0 ]; then
+  # 尽量修改 DNS 为 1.1.1.1 / 1.0.0.1（失败不退出）
+  if [ -e /etc/resolv.conf ] && [ -w /etc/resolv.conf ]; then
+    cp /etc/resolv.conf /etc/resolv.conf.bak 2>/dev/null || true
+    {
+      echo "nameserver 1.1.1.1"
+      echo "nameserver 1.0.0.1"
+    } > /etc/resolv.conf 2>/dev/null || {
+      echo "WARN: DNS 強制設定失敗，已還原。" >&2
+      mv /etc/resolv.conf.bak /etc/resolv.conf 2>/dev/null || true
+    }
+  else
+    echo "WARN: /etc/resolv.conf 不可寫或不存在，跳過 DNS 強制設定。" >&2
+  fi
+
+  # 切到普通用户继续执行第二阶段
+  exec su-exec ${APP_UID}:${APP_GID} bash "$0"
+fi
 
 # 生成配置文件，并经过 base64 加密
 echo "{
