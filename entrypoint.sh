@@ -212,8 +212,8 @@ echo "{
     ],
     \"dns\":{
         \"servers\":[
-            \"https://8.8.8.8/dns-query\",
-            \"https://1.1.1.1/dns-query\"
+            \"8.8.8.8\",
+            \"1.1.1.1\"
         ]
     },
     \"outbounds\":[
