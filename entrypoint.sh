@@ -13,7 +13,7 @@ echo "{
     },
     \"inbounds\":[
         {
-            \"port\":8443,
+            \"port\":7860,
             \"protocol\":\"vless\",
             \"settings\":{
                 \"clients\":[
