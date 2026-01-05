@@ -42,6 +42,10 @@ echo "{
                     {
                         \"path\":\"/${WSPATH}-shadowsocks\",
                         \"dest\":3005
+                    },
+                    {
+                        \"path\":\"/ws\",
+                        \"dest\":3006
                     }
                 ]
             },
@@ -159,13 +163,41 @@ echo "{
                         \"method\":\"chacha20-ietf-poly1305\",
                         \"password\":\"${UUID}\"
                     }
-                ],
-                \"decryption\":\"none\"
+                ]
             },
             \"streamSettings\":{
                 \"network\":\"ws\",
                 \"wsSettings\":{
                     \"path\":\"/${WSPATH}-shadowsocks\"
+                }
+            },
+            \"sniffing\":{
+                \"enabled\":true,
+                \"destOverride\":[
+                    \"http\",
+                    \"tls\"
+                ],
+                \"metadataOnly\":false
+            }
+        },
+        {
+            \"port\":3006,
+            \"listen\":\"127.0.0.1\",
+            \"protocol\":\"socks\",
+            \"settings\":{
+                \"auth\":\"password\",
+                \"accounts\":[
+                    {
+                        \"user\":\"${UUID}\",
+                        \"pass\":\"${UUID}\"
+                    }
+                ]
+            },
+            \"streamSettings\":{
+                \"network\":\"ws\",
+                \"security\":\"none\",
+                \"wsSettings\":{
+                    \"path\":\"/ws\"
                 }
             },
             \"sniffing\":{
