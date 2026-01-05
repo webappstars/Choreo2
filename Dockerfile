@@ -13,4 +13,4 @@ RUN apk add --no-cache iproute2 vim netcat-openbsd &&\
     addgroup --gid 10001 choreo &&\
     adduser --disabled-password  --no-create-home --uid 10001 --ingroup choreo choreouser
 
-CMD ["bash", "./entrypoint.sh"]
+CMD ["bash", "/home/choreouser/entrypoint.sh"]
